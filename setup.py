@@ -14,13 +14,13 @@ if sys.version_info[0] < 3:
 
 setuptools.setup(
     name="pyodm",
-    version="1.5.12",
-    author="OpenDroneMap Contributors",
+    version="1.5.13",
+    author="WebODM Contributors",
     author_email="pt@uav4geo.com",
-    description="Python SDK for OpenDroneMap",
+    description="Python library to process aerial imagery with the NodeODM API",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/OpenDroneMap/PyODM",
+    url="https://github.com/WebODM/PyODM",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

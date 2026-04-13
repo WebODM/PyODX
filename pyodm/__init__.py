@@ -1,5 +1,5 @@
 """
-PyODM is a library for easily creating orthophotos, DEMs, 3D models and point clouds from aerial images via the `NodeODM API`_. It's an official `OpenDroneMap`_ project.
+PyODM is a library for easily creating orthophotos, DEMs, 3D models and point clouds from aerial images via the `NodeODM API`_. It's an official `WebODM`_ project.
 
 Installation:
 -------------
@@ -19,7 +19,7 @@ Simple usage:
 
 To test these examples you need to start a NodeODM node via:
 
-``docker run -ti -p 3000:3000 opendronemap/nodeodm``
+``docker run -ti -p 3000:3000 webodm/nodeodm``
 
 Code Samples:
 -------------
@@ -36,19 +36,17 @@ For all development questions, please reach out on the `Community Forum`_.
 License: BSD 3-Clause, see LICENSE for more details.
 
 .. _NodeODM API:
-   https://github.com/OpenDroneMap/NodeODM/blob/master/docs/index.adoc
-.. _OpenDroneMap:
-    https://www.opendronemap.org
+   https://github.com/WebODM/NodeODM/blob/master/docs/index.adoc
+.. _WebODM:
+    https://webodm.org
 .. _Create Task:
-   https://github.com/OpenDroneMap/PyODM/blob/master/examples/create_task.py
+   https://github.com/WebODM/PyODM/blob/master/examples/create_task.py
 .. _Get Node Info:
-   https://github.com/OpenDroneMap/PyODM/blob/master/examples/get_node_info.py
+   https://github.com/WebODM/PyODM/blob/master/examples/get_node_info.py
 .. _report it:
-    https://github.com/OpenDroneMap/PyODM/issues
+    https://github.com/WebODM/PyODM/issues
 .. _`GitHub`:
-    https://github.com/OpenDroneMap/PyODM
-.. _`Community Forum`:
-    https://community.opendronemap.org
+    https://github.com/WebODM/PyODM
 """
 
 name = "pyodm"

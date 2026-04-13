@@ -13,7 +13,7 @@ python run_tests.py
 Will run the all doctests. You must have a NodeODM node running in test mode locally to run the test suite:
 
 ```bash
-docker run -ti -p 3000:3000 opendronemap/nodeodm --test
+docker run -ti -p 3000:3000 webodm/nodeodm --test
 ``` 
 
 ## Building The Documentation
@@ -52,8 +52,7 @@ There are many ways to contribute to the project:
 
  - ⭐️ us on GitHub.
  - Help us test the application.
- - Spread the word about OpenDroneMap on social media.
- - Help answer questions on the community [forum](https://community.opendronemap.org)
+ - Spread the word about [WebODM](https://webodm.org) on social media.
  - Become a contributor!
 
 
