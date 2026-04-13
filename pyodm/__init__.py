@@ -31,8 +31,6 @@ Getting Help / Reporting Issues:
 
 PyODM is in active development. If you find an issue please `report it`_. We welcome contributions, see the `GitHub`_ page for more information.
 
-For all development questions, please reach out on the `Community Forum`_.
-
 License: BSD 3-Clause, see LICENSE for more details.
 
 .. _NodeODM API:

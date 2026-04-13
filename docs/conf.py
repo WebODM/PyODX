@@ -44,6 +44,13 @@ extensions = [
     'sphinx.ext.napoleon',
 ]
 
+autodoc_mock_imports = [
+    'requests',
+    'requests_toolbelt',
+    'urllib3',
+    'simplejson',
+]
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
