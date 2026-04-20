@@ -30,7 +30,7 @@ import time
 from urllib3.exceptions import ReadTimeoutError
 
 from pyodx.types import NodeOption, NodeInfo, TaskInfo, TaskStatus
-from pyodx.exceptions import NodeConnectionError, NodeResponseError, NodeServerError, TaskFailedError, OdmError, RangeNotAvailableError
+from pyodx.exceptions import NodeConnectionError, NodeResponseError, NodeServerError, TaskFailedError, GenericError, RangeNotAvailableError
 from pyodx.utils import MultipartEncoder, options_to_json, AtomicCounter
 from requests_toolbelt.multipart import encoder
 
@@ -172,9 +172,9 @@ class Node:
 
         >>> n = Node('localhost', 3000)
         >>> n.info().version
-        '1.5.3'
+        '2.3.1'
         >>> n.info().engine
-        'odm'
+        'odx'
 
         Returns:
             :func:`~pyodx.types.NodeInfo`
@@ -186,7 +186,7 @@ class Node:
 
         >>> n = Node('localhost', 3000)
         >>> n.options()[0].name
-        'pc-classify'
+        'end-with'
 
         Returns:
             list: [:func:`~pyodx.types.NodeOption`]
@@ -331,7 +331,7 @@ class Node:
                                 raise NodeResponseError(result['error'])
                             else:
                                 raise NodeServerError("Failed upload with unexpected result: %s" % str(result))
-                    except OdmError as e:
+                    except GenericError as e:
                         if task['retries'] < max_retries and not (isinstance(result, dict) and 'noRetry' in result and result['noRetry']):
                             # Put task back in queue
                             task['retries'] += 1
@@ -634,7 +634,7 @@ class Task:
                                 nonloc.merge_chunks[part_num] = True
                             else:
                                 nonloc.error = RangeNotAvailableError()
-                        except OdmError as e:
+                        except GenericError as e:
                             time.sleep(5)
                             q.put((part_num, bytes_range))
                         except Exception as e:

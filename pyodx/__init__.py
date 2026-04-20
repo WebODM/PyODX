@@ -15,7 +15,7 @@ Simple usage:
    >>> task = n.create_task(['examples/images/image_1.jpg', 'examples/images/image_2.jpg'], {'dsm': True})
    >>> task.wait_for_completion()
    >>> os.listdir(task.download_assets("results"))[0:2]
-   ['odm_orthophoto', 'odm_dem']
+   ['3d_tiles', 'cameras.json']
 
 To test these examples you need to start a NodeODX node via:
 
