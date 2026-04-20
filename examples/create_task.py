@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append('..')
 
-from pyodm import Node, exceptions
+from pyodx import Node, exceptions
 
 node = Node("localhost", 3000)
 

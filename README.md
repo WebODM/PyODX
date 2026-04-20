@@ -1,6 +1,6 @@
-# PyODM
+# PyODX
 
-For the latest documentation visit: https://pyodm.readthedocs.io
+For the latest documentation visit: https://pyodx.readthedocs.io
 
 The information below is for managing the repository.
 
@@ -10,10 +10,10 @@ The information below is for managing the repository.
 python run_tests.py
 ```
 
-Will run the all doctests. You must have a NodeODM node running in test mode locally to run the test suite:
+Will run the all doctests. You must have a NodeODX node running in test mode locally to run the test suite:
 
 ```bash
-docker run -ti -p 3000:3000 webodm/nodeodm --test
+docker run -ti -p 3000:3000 webodm/nodeodx --test
 ``` 
 
 ## Building The Documentation

@@ -1,8 +1,8 @@
 import doctest
 
 if __name__ == "__main__":
-    import pyodm
-    doctest.testmod(pyodm)
+    import pyodx
+    doctest.testmod(pyodx)
 
-    from pyodm import api
+    from pyodx import api
     doctest.testmod(api)

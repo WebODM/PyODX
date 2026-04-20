@@ -1,5 +1,5 @@
 class OdmError(Exception):
-    """Generic catch-all exception. All exceptions in pyodm inherit from it."""
+    """Generic catch-all exception. All exceptions in pyodx inherit from it."""
     pass
 
 class NodeServerError(OdmError):
