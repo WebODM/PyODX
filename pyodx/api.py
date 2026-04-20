@@ -41,8 +41,8 @@ class Node:
         Args:
             host (str): Hostname or IP address of processing node
             port (int): Port of processing node
-            token (str): token to use for authentication
-            timeout (int): timeout value in seconds for network requests
+            token (str): Token to use for authentication
+            timeout (int): Timeout value in seconds for network requests
     """
     prefixHttp = re.compile('http:', re.I)
     prefixHttps = re.compile('https:', re.I)
@@ -59,14 +59,15 @@ class Node:
     def from_url(url, timeout=30):
         """Create a Node instance from a URL.
 
-        >>> n = Node.from_url("http://localhost:3000?token=abc")
-
         Args:
             url (str): URL in the format proto://hostname:port/?token=value
-            timeout (int): timeout value in seconds for network requests
+            timeout (int): Timeout value in seconds for network requests
 
         Returns:
-            :func:`~Node`
+            Node (Node): Node instance
+
+        Examples:
+            >>> n = Node.from_url("http://localhost:3000?token=abc")
         """
         u = urlparse(url)
         qs = parse_qs(u.query)
@@ -111,11 +112,11 @@ class Node:
         """Get a URL relative to this node.
 
         Args:
-            url (str): relative URL
-            query (dict): query values to append to the URL
+            url (str): Relative URL
+            query (dict): Query values to append to the URL
 
         Returns:
-            str: Absolute URL
+            URL (str): Absolute URL
         """
         netloc = self.host if (self.port == 80 or self.port == 443) else "{}:{}".format(self.host, self.port)
         proto = 'https' if self.port == 443 else 'http'
@@ -170,26 +171,28 @@ class Node:
     def info(self):
         """Retrieve information about this node.
 
-        >>> n = Node('localhost', 3000)
-        >>> n.info().version
-        '2.3.1'
-        >>> n.info().engine
-        'odx'
-
         Returns:
-            :func:`~pyodx.types.NodeInfo`
+            NodeInfo (NodeInfo): Node information
+
+        Examples:
+            >>> n = Node('localhost', 3000)
+            >>> n.info().version
+            '2.3.1'
+            >>> n.info().engine
+            'odx'
         """
         return NodeInfo(self.get('/info'))
 
     def options(self):
         """Retrieve the options available for creating new tasks on this node.
 
-        >>> n = Node('localhost', 3000)
-        >>> n.options()[0].name
-        'end-with'
-
         Returns:
-            list: [:func:`~pyodx.types.NodeOption`]
+            Options (list[NodeOption]): Available options
+
+        Examples:
+            >>> n = Node('localhost', 3000)
+            >>> n.options()[0].name
+            'end-with'
         """
         return list(map(lambda o: NodeOption(**o), self.get('/options')))
 
@@ -197,17 +200,18 @@ class Node:
         """Checks whether this node version is greater than or equal than
         a certain version number.
 
-        >>> n = Node('localhost', 3000)
-        >>> n.version_greater_or_equal_than('1.3.1')
-        True
-        >>> n.version_greater_or_equal_than('10.5.1')
-        False
-
         Args:
-            version (str): version number to compare
-        
+            version (str): Version number to compare
+
         Returns:
-            bool: result of comparison.
+            result (bool): True if node's version if >= version
+
+        Examples:
+            >>> n = Node('localhost', 3000)
+            >>> n.version_greater_or_equal_than('1.3.1')
+            True
+            >>> n.version_greater_or_equal_than('10.5.1')
+            False
         """
 
         node_version = self.info().version
@@ -218,33 +222,35 @@ class Node:
         """Start processing a new task.
         At a minimum you need to pass a list of image paths. All other parameters are optional.
 
-        >>> n = Node('localhost', 3000)
-        >>> t = n.create_task(['examples/images/image_1.jpg', 'examples/images/image_2.jpg'], \
-                          {'orthophoto-resolution': 2, 'dsm': True})
-        >>> info = t.info()
-        >>> info.status
-        <TaskStatus.RUNNING: 20>
-        >>> info.last_error
-        ''
-        >>> t.info().images_count
-        2
-        >>> t.output()[0:2]
-        ['DJI_0131.JPG - DJI_0313.JPG has 1 candidate matches', 'DJI_0131.JPG - DJI_0177.JPG has 3 candidate matches']
-
         Args:
-            files (list): list of image paths + optional GCP file path.
-            options (dict): options to use, for example {'orthophoto-resolution': 3, ...}
-            name (str): name for the task
-            progress_callback (function): callback reporting upload progress percentage
+            files (list): List of image paths + optional GCP file path.
+            options (dict): Options to use, for example {'orthophoto-resolution': 3, ...}
+            name (str): Name for the task
+            progress_callback (function): Callback reporting upload progress percentage
             skip_post_processing  (bool): When true, skips generation of map tiles, derivate assets, point cloud tiles.
             webhook (str): Optional URL to call when processing has ended (either successfully or unsuccessfully).
             outputs (list): Optional paths relative to the project directory that should be included in the all.zip result file, overriding the default behavior.
             parallel_uploads (int): Number of parallel uploads.
             max_retries (int): Number of attempts to make before giving up on a file upload.
             retry_timeout (int): Wait at least these many seconds before attempting to upload a file a second time, multiplied by the retry number.
-            task_uuid: an optional UUID string that will be used as UUID for this task instead of generating a random one.
+            task_uuid (str): An optional UUID string that will be used as UUID for this task instead of generating a random one.
+
         Returns:
-            :func:`~Task`
+            Task (Task): The created task
+
+        Examples:
+            >>> n = Node('localhost', 3000)
+            >>> t = n.create_task(['examples/images/image_1.jpg', 'examples/images/image_2.jpg'],
+            ...                   {'orthophoto-resolution': 2, 'dsm': True})
+            >>> info = t.info()
+            >>> info.status
+            <TaskStatus.RUNNING: 20>
+            >>> info.last_error
+            ''
+            >>> t.info().images_count
+            2
+            >>> t.output()[0:2]
+            ['DJI_0131.JPG - DJI_0313.JPG has 1 candidate matches', 'DJI_0131.JPG - DJI_0177.JPG has 3 candidate matches']
         """
         if not self.version_greater_or_equal_than("1.4.0"):
             return self.create_task_fallback(files, options, name, progress_callback, task_uuid)
@@ -455,21 +461,25 @@ class Node:
     def get_task(self, uuid):
         """Helper method to initialize a task from an existing UUID
 
-        >>> n = Node("localhost", 3000)
-        >>> t = n.get_task('00000000-0000-0000-0000-000000000000')
-        >>> t.__class__
-        <class 'pyodx.api.Task'>
-
         Args:
-            uuid: Unique identifier of the task
+            uuid (str): Unique identifier of the task
+
+        Returns:
+            Task (Task): The task instance
+
+        Examples:
+            >>> n = Node("localhost", 3000)
+            >>> t = n.get_task('00000000-0000-0000-0000-000000000000')
+            >>> t.__class__
+            <class 'pyodx.api.Task'>
         """
         return Task(self, uuid)
 
 class Task:
-    """A task is created to process images. To create a task, use :func:`~Node.create_task`.
+    """A task is created to process images. To create a task, use `Node.create_task`.
 
     Args:
-        node (:func:`~Node`): node this task belongs to
+        node (Node): Node this task belongs to
         uuid (str): Unique identifier assigned to this task.
     """
 
@@ -494,7 +504,7 @@ class Task:
         """Retrieves information about this task.
 
         Returns:
-            :func:`~pyodx.types.TaskInfo`
+            TaskInfo (TaskInfo): Task information
         """
         query = {}
         if with_output is not None:
@@ -509,7 +519,7 @@ class Task:
             line (int): Optional line number that the console output should be truncated from. For example, passing a value of 100 will retrieve the console output starting from line 100. Negative numbers are also allowed. For example -50 will retrieve the last 50 lines of console output. Defaults to 0 (retrieve all console output).
 
         Returns:
-            [str]: console output (one list item per row).
+            output (list[str]): Console output (one list item per row).
         """
         return self.get('/task/{}/output'.format(self.uuid), {'line': line})
 
@@ -517,7 +527,7 @@ class Task:
         """Cancel this task.
 
         Returns:
-            bool: task was canceled or not
+            success (bool): Task was canceled or not
         """
         return self.post('/task/cancel', {'uuid': self.uuid}).get('success', False)
 
@@ -525,7 +535,7 @@ class Task:
         """Remove this task.
 
         Returns:
-            bool: task was removed or not
+            success (bool): Task was removed or not
         """
         return self.post('/task/remove', {'uuid': self.uuid}).get('success', False)
 
@@ -533,10 +543,10 @@ class Task:
         """Restart this task.
 
         Args:
-            options (dict): options to use, for example {'orthophoto-resolution': 3, ...}
+            options (dict): Options to use, for example {'orthophoto-resolution': 3, ...}
 
         Returns:
-            bool: task was restarted or not
+            success (bool): Task was restarted or not
         """
         data = {'uuid': self.uuid}
         if options is not None: data['options'] = options_to_json(options)
@@ -546,12 +556,12 @@ class Task:
         """Download this task's assets archive to a directory.
 
         Args:
-            destination (str): directory where to download assets archive. If the directory does not exist, it will be created.
-            progress_callback (function): an optional callback with one parameter, the download progress percentage.
-            parallel_downloads (int): maximum number of parallel downloads if the node supports http range.
-            parallel_chunks_size (int): size in MB of chunks for parallel downloads
+            destination (str): Directory where to download assets archive. If the directory does not exist, it will be created.
+            progress_callback (function): Optional callback with one parameter, the download progress percentage.
+            parallel_downloads (int): Maximum number of parallel downloads if the node supports http range.
+            parallel_chunks_size (int): Size in MB of chunks for parallel downloads
         Returns:
-            str: path to archive file (.zip)
+            Path (str): Path to archive file (.zip)
         """
         info = self.info()
         if info.status != TaskStatus.COMPLETED:
@@ -699,12 +709,12 @@ class Task:
         """Download this task's assets to a directory.
 
         Args:
-            destination (str): directory where to download assets. If the directory does not exist, it will be created.
-            progress_callback (function): an optional callback with one parameter, the download progress percentage
-            parallel_downloads (int): maximum number of parallel downloads if the node supports http range.
-            parallel_chunks_size (int): size in MB of chunks for parallel downloads
+            destination (str): Directory where to download assets. If the directory does not exist, it will be created.
+            progress_callback (function): Optional callback with one parameter, the download progress percentage
+            parallel_downloads (int): Maximum number of parallel downloads if the node supports http range.
+            parallel_chunks_size (int): Size in MB of chunks for parallel downloads
         Returns:
-            str: path to saved assets
+            Path (str): Path to saved assets
         """
         zip_path = self.download_zip(destination, progress_callback=progress_callback, parallel_downloads=parallel_downloads, parallel_chunks_size=parallel_chunks_size)
         with zipfile.ZipFile(zip_path, "r") as zip_h:
@@ -715,14 +725,14 @@ class Task:
 
     def wait_for_completion(self, status_callback=None, interval=3, max_retries=5, retry_timeout=5):
         """Wait for the task to complete. The call will block until the task status has become
-        :func:`~TaskStatus.COMPLETED`. If the status is set to :func:`~TaskStatus.CANCELED` or :func:`~TaskStatus.FAILED`
+        `TaskStatus.COMPLETED`. If the status is set to `TaskStatus.CANCELED` or `TaskStatus.FAILED`
         it raises a TaskFailedError exception.
 
         Args:
-            status_callback (function): optional callback that will be called with task info updates every interval seconds.
-            interval (int): seconds between status checks.
-            max_retries (int): number of repeated attempts that should be made to receive a status update before giving up.
-            retry_timeout (int): wait N*retry_timeout between attempts, where N is the attempt number.
+            status_callback (function): Optional callback that will be called with task info updates every interval seconds.
+            interval (int): Seconds between status checks.
+            max_retries (int): Number of repeated attempts that should be made to receive a status update before giving up.
+            retry_timeout (int): Wait N*retry_timeout between attempts, where N is the attempt number.
         """
         retry = 0
 

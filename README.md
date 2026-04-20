@@ -1,6 +1,6 @@
 # PyODX
 
-For the latest documentation visit: https://pyodx.readthedocs.io
+For the latest documentation visit: https://pyodx.webodm.org
 
 The information below is for managing the repository.
 
@@ -21,17 +21,13 @@ docker run -ti -p 3000:3000 webodm/nodeodx --test
 Make sure you are using Python 3.
 
 ```bash
-pip install virtualenv
-virtualenv -p venv
-source venv/bin/activate
-pip install -r requirements.txt
+pip install -r docs/requirements.txt
 ```
 
-Use [`sphinx-autobuild`](https://github.com/GaretJax/sphinx-autobuild) to automatically watch for changes and rebuild the html site using:
+Serve the docs locally with live reload:
 
-```
-cd docs
-make livehtml
+```bash
+mkdocs serve
 ```
 
 To stop the server press `Ctrl+C`.

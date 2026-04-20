@@ -7,7 +7,7 @@ class JsonResponse:
 class NodeInfo(JsonResponse):
     """Information about a node
     
-    Args:
+    Attributes:
         version (str): Current API version
         task_queue_count (int): Number of tasks currently being processed or waiting to be processed
         total_memory (int): Amount of total RAM in the system in bytes
@@ -60,17 +60,17 @@ class NodeOption(JsonResponse):
 class TaskInfo(JsonResponse):
     """Task information
 
-    Args:
+    Attributes:
         uuid (str): Unique identifier
         name (str): Human friendly name
         date_created (datetime): Creation date and time
         processing_time (int): Milliseconds that have elapsed since the start of processing, or -1 if no information is available.
-        status (:func:`pyodx.types.TaskStatus`): status (running, queued, etc.)
-        last_error (str): if the task fails, this will be set to a string representing the last error that occured, otherwise it's an empty string.
-        options (dict): options used for this task
+        status (TaskStatus): Status (running, queued, etc.)
+        last_error (str): If the task fails, this will be set to a string representing the last error that occured, otherwise it's an empty string.
+        options (dict): Options used for this task
         images_count (int): Number of images (+ GCP file)
         progress (float): Percentage progress (estimated) of the task
-        output ([str]): Optional console output (one list item per row). This is populated only if the with_output parameter is passed to info().
+        output (list[str]): Optional console output (one list item per row). This is populated only if the with_output parameter is passed to info().
     """
     def __init__(self, json):
         self.uuid = json['uuid']
@@ -89,7 +89,7 @@ from enum import Enum
 class TaskStatus(Enum):
     """Task status
 
-    Args:
+    Attributes:
         QUEUED: Task's files have been uploaded and are waiting to be processed.
         RUNNING: Task is currently being processed.
         FAILED:	Task has failed for some reason (not enough images, out of memory, etc.
