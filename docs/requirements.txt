@@ -1,2 +1,2 @@
-Sphinx==8.0.2
-sphinx-autobuild==2024.9.3
+mkdocs-material==9.6.12
+mkdocstrings[python]==0.29.1
