@@ -29,14 +29,14 @@ import time
 
 from urllib3.exceptions import ReadTimeoutError
 
-from pyodm.types import NodeOption, NodeInfo, TaskInfo, TaskStatus
-from pyodm.exceptions import NodeConnectionError, NodeResponseError, NodeServerError, TaskFailedError, OdmError, RangeNotAvailableError
-from pyodm.utils import MultipartEncoder, options_to_json, AtomicCounter
+from pyodx.types import NodeOption, NodeInfo, TaskInfo, TaskStatus
+from pyodx.exceptions import NodeConnectionError, NodeResponseError, NodeServerError, TaskFailedError, GenericError, RangeNotAvailableError
+from pyodx.utils import MultipartEncoder, options_to_json, AtomicCounter
 from requests_toolbelt.multipart import encoder
 
 
 class Node:
-    """A client to interact with NodeODM API.
+    """A client to interact with NodeODX API.
 
         Args:
             host (str): Hostname or IP address of processing node
@@ -83,7 +83,7 @@ class Node:
 
     @staticmethod
     def compare_version(node_version, compare_version):
-        # Compare two NodeODM versions
+        # Compare two NodeODX versions
         # -1 = node version lower than compare
         # 0 = equal
         # 1 = node version higher than compare
@@ -172,12 +172,12 @@ class Node:
 
         >>> n = Node('localhost', 3000)
         >>> n.info().version
-        '1.5.3'
+        '2.3.1'
         >>> n.info().engine
-        'odm'
+        'odx'
 
         Returns:
-            :func:`~pyodm.types.NodeInfo`
+            :func:`~pyodx.types.NodeInfo`
         """
         return NodeInfo(self.get('/info'))
 
@@ -186,10 +186,10 @@ class Node:
 
         >>> n = Node('localhost', 3000)
         >>> n.options()[0].name
-        'pc-classify'
+        'end-with'
 
         Returns:
-            list: [:func:`~pyodm.types.NodeOption`]
+            list: [:func:`~pyodx.types.NodeOption`]
         """
         return list(map(lambda o: NodeOption(**o), self.get('/options')))
 
@@ -331,7 +331,7 @@ class Node:
                                 raise NodeResponseError(result['error'])
                             else:
                                 raise NodeServerError("Failed upload with unexpected result: %s" % str(result))
-                    except OdmError as e:
+                    except GenericError as e:
                         if task['retries'] < max_retries and not (isinstance(result, dict) and 'noRetry' in result and result['noRetry']):
                             # Put task back in queue
                             task['retries'] += 1
@@ -458,7 +458,7 @@ class Node:
         >>> n = Node("localhost", 3000)
         >>> t = n.get_task('00000000-0000-0000-0000-000000000000')
         >>> t.__class__
-        <class 'pyodm.api.Task'>
+        <class 'pyodx.api.Task'>
 
         Args:
             uuid: Unique identifier of the task
@@ -494,7 +494,7 @@ class Task:
         """Retrieves information about this task.
 
         Returns:
-            :func:`~pyodm.types.TaskInfo`
+            :func:`~pyodx.types.TaskInfo`
         """
         query = {}
         if with_output is not None:
@@ -634,7 +634,7 @@ class Task:
                                 nonloc.merge_chunks[part_num] = True
                             else:
                                 nonloc.error = RangeNotAvailableError()
-                        except OdmError as e:
+                        except GenericError as e:
                             time.sleep(5)
                             q.put((part_num, bytes_range))
                         except Exception as e:

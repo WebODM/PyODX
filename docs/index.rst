@@ -1,13 +1,13 @@
-Welcome to PyODM's documentation!
+Welcome to PyODX's documentation!
 =================================
 
-.. automodule:: pyodm
+.. automodule:: pyodx
     :members:
 
-.. automodule:: pyodm.api
+.. automodule:: pyodx.api
     :members:
 
-.. automodule:: pyodm.types
+.. automodule:: pyodx.types
     :members:
 
 .. toctree::

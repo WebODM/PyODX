@@ -48,7 +48,7 @@ class MultipartEncoder(encoder.MultipartEncoder):
 
 def options_to_json(options):
     """Convert a dictionary of options {k1: v1, k2: v2, ...} to a JSON
-    string suitable for passing as an argument to the NodeODM API.
+    string suitable for passing as an argument to the NodeODX API.
 
     Args:
         options: options for example {'orthophoto-resolution': 3, ...}
