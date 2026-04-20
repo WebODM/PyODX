@@ -1,6 +1,6 @@
 site_name: PyODX
 site_url: https://pyodx.webodm.org
-site_description: A Python SDK for NodeODX API
+site_description: A Python library to communicate with the NodeODX API
 repo_url: https://github.com/WebODM/PyODX
 repo_name: WebODM/PyODX
 
